@@ -4,12 +4,12 @@ import { OrbitControls, Preload } from "@react-three/drei";
 import SunCanvas from "./SunCanvas.js";
 extend({ OrbitControls });
 
-const MainCanvas = () => {
+const MainCanvas = ({ planets }) => {
   const controlsRef = useRef(null);
 
   return (
     <>
-      <SunCanvas />
+      <SunCanvas planetsData={planets} />
     </>
   );
 };

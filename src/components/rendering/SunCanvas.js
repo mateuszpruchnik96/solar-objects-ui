@@ -8,7 +8,7 @@ import Grid from "./Grid";
 import Controls from "./Controls";
 extend({ OrbitControls });
 
-const SunCanvas = () => {
+const SunCanvas = ({ planetsData }) => {
   const [xPosition, setXPosition] = useState(0);
   const [yPosition, setYPosition] = useState(0);
   const [zPosition, setZPosition] = useState(0);
@@ -25,12 +25,45 @@ const SunCanvas = () => {
   const scale = 10_000_000;
 
   let data = require("./../../example.json");
+
   useEffect(() => {
     data = require("./../../example.json");
     setPlanets(data.planets);
+
+    // setPlanets(planetsData);
+    console.log(planets);
   });
 
-  console.log(planets);
+  useEffect(() => {
+    const temp = JSON.stringify(planets);
+    console.log("temp " + JSON.stringify(temp));
+    console.log(temp);
+
+    updateAllPositions(planetsData);
+
+    // setPlanets(planetsData);
+  }, [planetsData]);
+
+  console.log(planetsData);
+
+  const updateAllPositions = (planetsData) => {
+    const updatedPlanets = { ...planets };
+
+    let planetsDataJSON = {};
+    planetsData && planetsData.charAt(0) == "{"
+      ? (planetsDataJSON = JSON.parse(planetsData))
+      : (planetsDataJSON = {});
+    Object.keys(planetsDataJSON).forEach((key) => {
+      console.log(JSON.parse(planetsData));
+      updatedPlanets[planetsDataJSON[key].name].position = [
+        planetsDataJSON[key].position.x / scale,
+        planetsDataJSON[key].position.y / scale,
+        planetsDataJSON[key].position.z / scale,
+      ];
+    });
+
+    setPlanets(updatedPlanets);
+  };
 
   const generatePlanets = function (planets) {
     if (planets !== {}) {
@@ -40,6 +73,8 @@ const SunCanvas = () => {
             <Cylinder3d
               scale={largestDistance * 100}
               position={[...(planets[key].position / scale)]}
+              // position={[...(planetsData.position / scale)]}
+
               // texture={()=>{textures.filter(texture=>texture.)}}
             />
           ))}
@@ -97,6 +132,9 @@ const SunCanvas = () => {
                 planets[key].position[1] / scale,
                 planets[key].position[2] / scale,
               ]}
+              proba={planetsData}
+
+              // onChangePosition={on}
               // onClick={(e) => console.log(e.target)}
             />
           );

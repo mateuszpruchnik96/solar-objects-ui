@@ -7,7 +7,7 @@ import MainCanvas from "./components/rendering/MainCanvas";
 
 function App() {
   const [name, setName] = useState("");
-  const [greeting, setGreeting] = useState("");
+  const [planets, setPlanets] = useState("");
   const [connected, setConnected] = useState(false);
 
   let initialized = false;
@@ -41,7 +41,7 @@ function App() {
 
   const onUpdate = useCallback((payload) => {
     console.log("Received payload:", payload);
-    setGreeting(payload.body);
+    setPlanets(payload.body);
   }, []);
 
   const onError = useCallback((err) => {
@@ -95,9 +95,9 @@ function App() {
           Send
         </button>
       </form>
-      {greeting && <p>{greeting}</p>}
+      {planets && <p>{planets}</p>}
       <section className="App-header"></section>
-      <MainCanvas />
+      <MainCanvas planets={planets} />
     </div>
   );
 }
